@@ -31,17 +31,26 @@ class ValueFrame(ctk.CTkFrame):
             widget.destroy()
 
         row = 0
-
-        for key, value in self.manager.data.items():
+        print(f"DATA {self.manager.data}")
+        for language, value in self.manager.data.items():
             font = ctk.CTkFont(family='Roboto', size=14)
-            label = ctk.CTkLabel(self.values_frame, text=key.capitalize(),
+            label = ctk.CTkLabel(self.values_frame, text=language.capitalize(),
                                  anchor="w", font=font)
             label.grid(row=row, column=0, padx=10, pady=5, sticky="ew")
 
             textbox = ctk.CTkTextbox(
                 self.values_frame, height=50, border_width=1)
+            render_value = ""
+            if self.manager.current_module not in value:
+                render_value = ""
+            else:
+                pos_to_search_value = value[self.manager.current_module]
+                if field in pos_to_search_value:
+                    render_value = pos_to_search_value[field] or ""
+                else:
+                    render_value = ""
 
-            langValue = value[field] if field in value else ""
+            langValue = render_value
 
             textbox.insert("0.0", langValue)
             textbox.grid(row=row+1, column=0, padx=10, pady=2, sticky="ew")
@@ -49,9 +58,10 @@ class ValueFrame(ctk.CTkFrame):
             row = row+2
 
     def save_values(self):
+        # FIX: Save data with the new modules management
 
         keys = []
-        fields = self.get_all_textboxes()
+        fields = self._get_all_textboxes()
         for lang, value in self.manager.data.items():
             keys.append(lang)
 
@@ -59,6 +69,6 @@ class ValueFrame(ctk.CTkFrame):
             self.manager.data[key][self.field] = fields[index].get(
                 "0.0", "end").strip()
 
-    def get_all_textboxes(self):
+    def _get_all_textboxes(self):
         return [widget for widget in self.values_frame.winfo_children() if
                 isinstance(widget, ctk.CTkTextbox)]

@@ -24,10 +24,14 @@ class KeysFrame(ctk.CTkFrame):
         self.loadButton.grid(row=0, column=0, padx=10,
                              pady=10, sticky="ew", columnspan=2)
 
+        def module_selection_callback(e):
+            self.fileButton.configure(text=f"  Module: {e}")
+            self.render_keys()
+
         def module_selection():
             self.module_selector = ModuleSelectionWindow(
                 master=self.master, manager=self.manager,
-                callback=lambda: print("Selection Callback"))
+                callback=module_selection_callback)
             self.module_selector.resizable(False, False)
 
         self.fileButton = ctk.CTkButton(
@@ -158,7 +162,6 @@ class KeysFrame(ctk.CTkFrame):
             # mb.showinfo("Subfolder Selected", f"You selected: {name}")
             dlg.destroy()
             self.manager.loadData(self.manager)
-            self.render_keys()
 
         for name in subfolders:
             btn = ctk.CTkButton(

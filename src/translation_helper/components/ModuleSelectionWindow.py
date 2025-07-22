@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from translation_helper.data.TranslationManager import TManager
 from typing import Callable
+import os
 
 
 class ModuleSelectionWindow(ctk.CTkToplevel):
@@ -35,3 +36,26 @@ class ModuleSelectionWindow(ctk.CTkToplevel):
 
         self.frame = ctk.CTkScrollableFrame(self)
         self.frame.grid(row=1, column=0, sticky="nsew", pady=10, padx=10)
+        self.frame.grid_columnconfigure(0, weight=1)
+        self.draw_options()
+
+    def draw_options(self):
+        search_path = os.path.join(self.manager.path, self.manager.mainLang)
+        print(search_path)
+
+        row = 0
+        for entry in os.listdir(search_path):
+            print(entry)
+            if os.path.isdir(os.path.join(search_path, entry)):
+                continue
+
+            def run_callback(e):
+                self.manager.current_module = e
+                self.callback(e)
+                self.destroy()
+
+            entry_button = ctk.CTkButton(
+                    self.frame, text=f"{entry}",
+                    command=lambda e=entry: run_callback(e))
+            entry_button.grid(row=row, column=0, sticky="ew", padx=10, pady=10)
+            row = row+1
