@@ -16,7 +16,7 @@ class EditorFrame(customtkinter.CTkFrame):
 
 class App(customtkinter.CTk):
     def __init__(self):
-        super().__init__()
+        super().__init__(className="translation-manager")
         self.geometry("870x600")
         self.grid_rowconfigure(0, weight=1)  # configure grid system
         self.grid_columnconfigure(1, weight=3)

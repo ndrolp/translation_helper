@@ -4,8 +4,8 @@ import json
 
 class TManager:
     _instance = None
-    path = "Prueba"
-    mainLang = "en"
+    path = ""
+    mainLang = ""
     data = {}
 
     def __init__(self):

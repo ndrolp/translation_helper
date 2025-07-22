@@ -1,7 +1,7 @@
 import os
 import tkinter.filedialog as fd
 from components.ValuesFrame import ValueFrame
-# import tkinter.messagebox as mb
+from components.CreateKeyWindow import CreateKeyWindow
 import customtkinter as ctk
 from data.TranslationManager import TManager
 
@@ -46,9 +46,9 @@ class KeysFrame(ctk.CTkFrame):
             row=3, column=0, padx=10, pady=5, sticky="nsew", columnspan=2)
 
         self.saveButton = ctk.CTkButton(
-                self, text="Save Changes",
-                command=lambda: self.manager.saveData(self.manager)
-                )
+            self, text="Save Changes",
+            command=lambda: self.manager.saveData(self.manager)
+        )
         self.saveButton.grid(row=4, column=0, padx=10,
                              pady=10, sticky="ew", columnspan=2)
 
@@ -67,6 +67,9 @@ class KeysFrame(ctk.CTkFrame):
         self._ask_select_subfolder(subfolders)
 
     def render_keys(self):
+        if not self.manager.mainLang:
+            return
+
         for widget in self.keysFields.winfo_children():
             widget.destroy()
 
@@ -108,7 +111,7 @@ class KeysFrame(ctk.CTkFrame):
                 self.keysFields, text="Delete", width=30, fg_color="#e78284",
                 text_color="#2b2b2b",
                 command=lambda e=entry: delete_key(key=e)
-                )
+            )
 
             deleteButton.grid(row=row, column=2, padx=5, pady=5, sticky="nsew")
             row = row+1
@@ -155,70 +158,6 @@ class KeysFrame(ctk.CTkFrame):
         if not self.manager.path:
             return
 
-        dlg = ctk.CTkToplevel(self)
-        dlg.title("i18n Manager Add Key")
-        dlg.geometry("400x280")
-        # dlg.grab_set()
-        parent_x = self.master.winfo_rootx()
-        parent_y = self.master.winfo_rooty()
-        parent_width = self.master.winfo_width()
-        parent_height = self.master.winfo_height()
-        # Get dialog dimensions
-        dlg_width = dlg.winfo_width()
-        dlg_height = dlg.winfo_height()
-        x = parent_x + (parent_width // 2) - (dlg_width // 2)
-        y = parent_y + (parent_height // 2) - (dlg_height // 2)
-        dlg.geometry(f"+{x}+{y}")
-
-        dlg.grid_columnconfigure(0, weight=1)
-
-        key_label = ctk.CTkLabel(dlg, text="Add new Key")
-        key_label.grid(row=0, column=0, sticky="ew", pady=15, padx=10)
-
-        key_label = ctk.CTkLabel(dlg, text="Key Name", anchor="w")
-        key_label.grid(row=1, column=0, sticky="ew", pady=5, padx=10)
-
-        key_name = ctk.CTkEntry(dlg, placeholder_text="Key Name")
-        key_name.grid(row=2, column=0, sticky="ew", pady=5, padx=10)
-
-        value_label = ctk.CTkLabel(dlg, text="Key Value", anchor="w")
-        value_label.grid(row=3, column=0, sticky="ew", pady=5, padx=10)
-
-        value_field = ctk.CTkEntry(dlg, placeholder_text="Key Value")
-        value_field.grid(row=4, column=0, sticky="ew", pady=5, padx=10)
-
-        def save_action():
-            key = key_name.get().strip()
-            val = value_field.get().strip()
-
-            if not key or not val:
-                return
-
-            self.manager.addKey(self.manager, key=key, val=val)
-            self.render_keys()
-            dlg.destroy()
-
-        save_button = ctk.CTkButton(dlg, text="Add Key", command=save_action)
-        save_button.grid(row=5, column=0, sticky="sew", pady=15, padx=10)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        dlg = CreateKeyWindow(master=self.master,
+                              manager=self.manager, callback=self.render_keys)
+        dlg.grab_set()
