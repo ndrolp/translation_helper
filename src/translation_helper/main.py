@@ -1,8 +1,8 @@
 import customtkinter
-from components import KeysFrame, ValuesFrame
-from data.TranslationManager import TManager
-
-customtkinter.set_default_color_theme("./theme.json")
+from translation_helper.components import KeysFrame, ValuesFrame
+from translation_helper.data.TranslationManager import TManager
+import pathlib
+import os
 
 
 class EditorFrame(customtkinter.CTkFrame):
@@ -34,6 +34,14 @@ class App(customtkinter.CTk):
         self.my_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
 
-if __name__ == "__main__":
+def run():
+    current_dir = pathlib.Path(__file__).parent
+    path = os.path.join(current_dir, "theme.json")
+
+    customtkinter.set_default_color_theme(path)
     app = App()
     app.mainloop()
+
+
+if __name__ == "__main__":
+    run()

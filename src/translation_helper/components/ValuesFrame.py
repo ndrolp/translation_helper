@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from data.TranslationManager import TManager
+from translation_helper.data.TranslationManager import TManager
 
 
 class ValueFrame(ctk.CTkFrame):

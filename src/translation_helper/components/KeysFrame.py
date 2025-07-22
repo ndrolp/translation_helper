@@ -1,9 +1,9 @@
 import os
-import tkinter.filedialog as fd
-from components.ValuesFrame import ValueFrame
-from components.CreateKeyWindow import CreateKeyWindow
 import customtkinter as ctk
-from data.TranslationManager import TManager
+import tkinter.filedialog as fd
+from translation_helper.components.ValuesFrame import ValueFrame
+from translation_helper.components.CreateKeyWindow import CreateKeyWindow
+from translation_helper.data.TranslationManager import TManager
 
 
 class KeysFrame(ctk.CTkFrame):
