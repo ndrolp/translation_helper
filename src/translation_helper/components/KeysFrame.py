@@ -4,6 +4,7 @@ import tkinter.filedialog as fd
 from translation_helper.components.ValuesFrame import ValueFrame
 from translation_helper.components.CreateKeyWindow import CreateKeyWindow
 from translation_helper.data.TranslationManager import TManager
+from translation_helper.components.ModuleSelectionWindow import ModuleSelectionWindow
 
 
 class KeysFrame(ctk.CTkFrame):
@@ -14,32 +15,42 @@ class KeysFrame(ctk.CTkFrame):
         self.values_frame = values_frame
 
         super().__init__(master, **kwargs)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=3)
+        self.grid_columnconfigure(0, weight=8)
+        self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(3, weight=1)
 
         self.loadButton = ctk.CTkButton(
-            self, text="Load Folder", command=self._load_folder)
+            self, text="Load a Folder", command=self._load_folder)
         self.loadButton.grid(row=0, column=0, padx=10,
                              pady=10, sticky="ew", columnspan=2)
 
-        self.label = ctk.CTkLabel(self, text="Keys", anchor="w")
-        self.label.grid(row=1, column=0, padx=10, sticky="we")
+        def module_selection():
+            self.module_selector = ModuleSelectionWindow(
+                master=self.master, manager=self.manager,
+                callback=lambda: print("Selection Callback"))
+            self.module_selector.resizable(False, False)
+
+        self.fileButton = ctk.CTkButton(
+            self, text="  File : Chose A Module   ", command=module_selection,
+            fg_color="#babbf1", anchor="we",
+            text_color="#2b2b2b")
+        self.fileButton.grid(row=1, column=0, padx=10, sticky="we",
+                             columnspan=1)
 
         self.addButton = ctk.CTkButton(
-            self, text="Add Key",
+            self, text="Add Key", width=60,
             command=self.create_key)
-        self.addButton.grid(row=1, column=1, padx=10, sticky="e")
+        self.addButton.grid(row=1, column=1, padx=10, sticky="ew")
+
+        self.filterField = ctk.CTkEntry(
+            self, placeholder_text="Filter Keys")
+        self.filterField.grid(row=2, column=0, padx=10, pady=10,
+                              sticky="ew", columnspan=1)
 
         self.searchButton = ctk.CTkButton(self, text="Search", width=50,
                                           command=self.render_keys
                                           )
-        self.searchButton.grid(row=2, column=0, padx=10, sticky="ew")
-
-        self.filterField = ctk.CTkEntry(
-            self, placeholder_text="Filter Keys")
-        self.filterField.grid(row=2, column=1, padx=10, pady=10,
-                              sticky="ew", columnspan=1)
+        self.searchButton.grid(row=2, column=1, padx=10, sticky="ew")
 
         self.keysFields = ctk.CTkScrollableFrame(self)
         self.keysFields.grid(

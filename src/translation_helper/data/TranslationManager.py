@@ -6,6 +6,7 @@ class TManager:
     _instance = None
     path = ""
     mainLang = ""
+    current_module = ""
     data = {}
 
     def __init__(self):
