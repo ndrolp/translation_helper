@@ -140,6 +140,7 @@ class KeysFrame(ctk.CTkFrame):
         dlg.title("i18n Manager Main Language")
         dlg.geometry("400x200")
         dlg.grab_set()  # make modal
+        dlg.resizable(False, False)
         parent_x = self.master.winfo_rootx()
         parent_y = self.master.winfo_rooty()
         parent_width = self.master.winfo_width()

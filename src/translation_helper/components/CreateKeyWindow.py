@@ -11,6 +11,7 @@ class CreateKeyWindow(ctk.CTkToplevel):
         self.master = master
         self.manager = manager
         self.callback = callback
+        self.resizable(False, False)
 
         parent_x = self.master.winfo_rootx()
         parent_y = self.master.winfo_rooty()

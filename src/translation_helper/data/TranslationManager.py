@@ -53,19 +53,17 @@ class TManager:
         return keys
 
     def saveData(self):
-        # FIX: Remake all the files with the modules
         for lang, value in self.data.items():
-            file = os.path.join(self.path, lang, f"{lang}.json")
-            print(file)
-            with open(file, "w") as f:
-                json.dump(value, f, indent=4)
+            for module, moduleValue in self.data[lang].items():
+                file = os.path.join(self.path, lang, module)
+                print(file)
 
+                with open(file, "w") as f:
+                    json.dump(moduleValue, f, indent=4)
 
     def addKey(self, key: str, val: str):
-        # FIX: Remake all the files with the modules
-        self.data[self.mainLang][key] = val
+        self.data[self.mainLang][self.current_module][key] = val
 
     def removeKey(self, key: str):
-        # FIX: Remake all the files with the modules
         for lang, value in self.data.items():
-            value.pop(key, None)
+            value[self.current_module].pop(key, None)

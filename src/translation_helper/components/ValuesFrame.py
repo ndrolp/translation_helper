@@ -41,6 +41,7 @@ class ValueFrame(ctk.CTkFrame):
             textbox = ctk.CTkTextbox(
                 self.values_frame, height=50, border_width=1)
             render_value = ""
+            print(value)
             if self.manager.current_module not in value:
                 render_value = ""
             else:
@@ -58,16 +59,17 @@ class ValueFrame(ctk.CTkFrame):
             row = row+2
 
     def save_values(self):
-        # FIX: Save data with the new modules management
-
         keys = []
         fields = self._get_all_textboxes()
         for lang, value in self.manager.data.items():
             keys.append(lang)
 
         for index, key in enumerate(keys):
-            self.manager.data[key][self.field] = fields[index].get(
-                "0.0", "end").strip()
+            if self.manager.current_module not in self.manager.data[key]:
+                self.manager.data[key][self.manager.current_module] = {}
+
+            self.manager.data[key][self.manager.current_module][self.field] = (
+                fields[index].get("0.0", "end").strip())
 
     def _get_all_textboxes(self):
         return [widget for widget in self.values_frame.winfo_children() if
